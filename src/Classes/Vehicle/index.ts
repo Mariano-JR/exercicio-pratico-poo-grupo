@@ -2,7 +2,7 @@ export class Vehicle {
     static id: number = 1
     private vechicleId = Vehicle.id
     private typeVehicle: string = ''
-    private rental: boolean = false
+    private rented: boolean = false
 
     constructor(
         private plate: string,
@@ -14,12 +14,32 @@ export class Vehicle {
         Vehicle.id++
     }
 
+    get idNumber(): number {
+        return this.vechicleId
+    }
+
+    get modelVehicle(): string {
+        return this.model
+    }
+
+    get vehicleLicenseType(): string {
+        return this.licenseType
+    }
+
     get value(): number {
         return this.dailyValue
     }
 
     get plateNumber(): string {
         return this.plate
+    }
+
+    setRented(): void {
+        if (this.rented) {
+            this.rented = false
+        } else {
+            this.rented = true
+        }
     }
 
     howTypeVehicle(): void {

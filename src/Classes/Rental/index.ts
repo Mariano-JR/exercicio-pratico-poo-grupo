@@ -16,4 +16,16 @@ export class Rental {
         this.agreedDailyValue = vehicle.value
         Rental.id++
     }
+
+    get rentalClient(): Client {
+        return this.client
+    }
+
+    get rentalVehicle(): Vehicle {
+        return this.vehicle
+    }
+
+    setStatus(): void {
+        this.status = 'Finalizado'
+    }
 }

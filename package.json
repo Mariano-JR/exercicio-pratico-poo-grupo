@@ -8,6 +8,7 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.9.4",
     "typescript": "5.2.2"
   }
 }
