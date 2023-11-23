@@ -1,0 +1,13 @@
+{
+  "name": "aula3",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "tsc && node ./dist/index.js"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "5.2.2"
+  }
+}
