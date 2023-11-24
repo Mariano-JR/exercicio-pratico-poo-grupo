@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "tsc && node ./dist/index.js"
+    "start": "rm -rf dist && tsc && node ./dist/main/index.js"
   },
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.9.4",
     "typescript": "5.2.2"
+  },
+  "dependencies": {
+    "readline-sync": "^1.4.10"
   }
 }
