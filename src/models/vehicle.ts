@@ -12,7 +12,7 @@ export class Vehicle {
         this.model = model
         this.plate = plate
         this.daily_value = daily_value
-        this.license_type = type == 'Carro' ? 'A' : 'B'
+        this.license_type = type == 'Carro' ? 'B' : 'A'
         this.available = true
     }
 }

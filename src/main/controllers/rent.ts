@@ -4,7 +4,7 @@ import { ClientRepositoryInterface } from "../../infra/database/interfaces/clien
 import { VehicleRepositoryInterface } from "../../infra/database/interfaces/vehicle";
 import { RentRepositoryInterface } from "../../infra/database/interfaces/rent";
 import { formatCurrency } from '../helpers/currency';
-import { formatDate } from '../helpers/date';
+import { formatDate, formatDateToSave } from '../helpers/date';
 
 export class RentController {
     constructor(
@@ -38,7 +38,7 @@ export class RentController {
         }
         const vehicle = this.vehicleRepository.findById(rentExists.vehicle_id)
         console.log(`\n---------------------------------------\n|              Fatura #${rentExists.id}              |\n---------------------------------------\n`)
-        console.log(`ID: ${rentExists.id}\nCliente: ${client.name}\nVeiculo: ${vehicle!.model}\nData de Locacao: ${formatDate(rentExists.start_date)}\nData de Entrega: ${formatDate(rentExists.return_date!)}\nValor total: ${formatCurrency(rentExists.amount)}\n`)
+        console.log(`ID: ${rentExists.id}\nCliente: ${client.name}\nVeiculo: ${vehicle!.model}\nData de Locacao: ${formatDate(rentExists.start_date)}\n${rentExists.return_date !== undefined ? `Data de Entrega: ${formatDate(rentExists.return_date!)}\nValor total: ${formatCurrency(rentExists.amount)}` : 'Status: Andamento'}\n`)
     }
 
     public register(): void | boolean {
@@ -70,7 +70,7 @@ export class RentController {
         const daily_value = vehicle.daily_value
         const start_date = readlineSync.question('\nDigite a data de inicio do aluguel: ')
 
-        const rent = new Rent(clientExists.id, vehicle_id, daily_value, new Date(start_date))
+        const rent = new Rent(clientExists.id, vehicle_id, daily_value, formatDateToSave(start_date))
         this.rentRepository.save(rent)
         console.log('\nVeiculo alugado com sucesso')
     }
