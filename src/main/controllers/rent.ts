@@ -25,7 +25,7 @@ export class RentController {
             console.log('\nErro: O cliente nao possui alugueis')
             return false
         }
-        console.log('\n-------------------------\n| Lista alugueis do cliente |\n-------------------------\n')
+        console.log('\n ------------------------------\n|   Lista alugueis do cliente  |\n ------------------------------\n')
         rentals.map(rent => {
             const vehicle = this.vehicleRepository.findById(rent.vehicle_id)
             console.log(`- ID: ${rent.id} | Cliente: ${client.name} | Veiculo: ${vehicle!.model} | Data de Locacao: ${formatDate(rent.start_date)}\n`)
@@ -37,7 +37,7 @@ export class RentController {
             return false
         }
         const vehicle = this.vehicleRepository.findById(rentExists.vehicle_id)
-        console.log(`\n---------------------------------------\n|              Fatura #${rentExists.id}              |\n---------------------------------------\n`)
+        console.log(`\n ------------------------------\n|           Fatura #${rentExists.id}           |\n ------------------------------\n`)
         console.log(`ID: ${rentExists.id}\nCliente: ${client.name}\nVeiculo: ${vehicle!.model}\nData de Locacao: ${formatDate(rentExists.start_date)}\n${rentExists.return_date !== undefined ? `Data de Entrega: ${formatDate(rentExists.return_date!)}\nValor total: ${formatCurrency(rentExists.amount)}` : 'Status: Andamento'}\n`)
     }
 
@@ -59,8 +59,10 @@ export class RentController {
             console.log('\nErro: licenca invalida, ou não ha veiculos dessa licenca para alugar')
             return false
         }
-        console.log('\n-------------------------\n| Lista de veiculos disponiveis |\n-------------------------\n')
-        console.log(vehiclesExists)
+        console.log(`\n ----------------------------------\n|   Lista de veiculos disponiveis  |\n ----------------------------------\n`)
+        vehiclesExists.map(vehicle => {
+            console.log(`- ID: ${vehicle.id} | Veiculo: ${vehicle.type} | Modelo: ${vehicle.model} | Placa: ${vehicle.plate} | Valor da Diaria: R$ ${vehicle.daily_value},00\n`)
+        })
         const vehicle_id = +readlineSync.question('\nDigite o Id do veiculo: ')
         const vehicle = this.vehicleRepository.findById(vehicle_id)
         if (!vehicle) {

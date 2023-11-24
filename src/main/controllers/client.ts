@@ -9,7 +9,7 @@ export class ClientController {
 
     public list(): void | boolean {
         const clients = this.clientRepository.list()
-        console.log(`\n---------------------------------------\n|              Lista de Clientes              |\n---------------------------------------\n`)
+        console.log(`\n------------------------------\n|  Lista de Clientes  |\n------------------------------\n`)
         clients.map(client => {
             console.log(`- ID: ${client.id} | Nome: ${client.name} | CPF: ${client.cpf} | Licenca: ${client.license_type}\n`)
         })
