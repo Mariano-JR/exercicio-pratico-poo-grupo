@@ -1,6 +1,6 @@
 import { ClientRepository } from "../infra/database/repositories/client"
 import { RentRepository } from "../infra/database/repositories/rent"
-import { VehicleRepository } from "../infra/database/repositories/veihcle"
+import { VehicleRepository } from "../infra/database/repositories/vehicle"
 import { Client } from "../models/client"
 import { Rent } from "../models/rent"
 import { Vehicle } from "../models/vehicle"
@@ -10,7 +10,7 @@ const clientRepository = new ClientRepository()
 const vehicleRepository = new VehicleRepository()
 const rentRepository = new RentRepository()
 
-function registerClient() {
+function registerClient(): void | boolean {
     const name = readlineSync.question('\nDigite o nome do cliente: ')
     const cpf = readlineSync.question('\nDigite o cpf do cliente, apenas numeros: ')
     const clientExists = clientRepository.findByCpf(cpf)
@@ -25,7 +25,7 @@ function registerClient() {
     console.log('\nCliente cadastrado com sucesso!')
 }
 
-function registerVehicle() {
+function registerVehicle(): void | boolean {
     const type = readlineSync.question('\nDigite a tipo de veiculo: (Carro/Moto) ')
     const model = readlineSync.question('\nDigite o modelo do veiculo: ')
     const plate = readlineSync.question('\nDigite a placa do veiculo: ')
@@ -41,7 +41,7 @@ function registerVehicle() {
     console.log('\nVeiculo cadastrado')
 }
 
-function rentVehicle() {
+function rentVehicle(): void | boolean {
     const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
     const clientExists = clientRepository.findByCpf(cpf)
     if (!clientExists) {
@@ -75,7 +75,7 @@ function rentVehicle() {
     console.log('\nVeiculo alugado com sucesso')
 }
 
-function returnVehicle() {
+function returnVehicle(): void | boolean {
     const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
     const client = clientRepository.findByCpf(cpf)
     if (!client) {
@@ -95,7 +95,7 @@ function returnVehicle() {
     console.log('\nVeiculo devolvido com sucesso')
 }
 
-function listVehicles(filter: boolean) {
+function listVehicles(filter: boolean): void | boolean {
     const vehicles = vehicleRepository.listByFilter(filter)
     console.log(`\n---------------------------------\n| Lista de veiculos ${filter ? 'disponiveis' : ' alugados  '} |\n---------------------------------\n`)
     vehicles.map(vehicle => {
@@ -103,7 +103,7 @@ function listVehicles(filter: boolean) {
     })
 }
 
-function getInvoice() {
+function getInvoice(): void | boolean {
     const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
     const client = clientRepository.findByCpf(cpf)
     if (!client) {
