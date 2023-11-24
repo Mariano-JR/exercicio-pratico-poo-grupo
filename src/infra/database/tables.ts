@@ -15,10 +15,10 @@ export const clientsTable = [
 ]
 
 export const rentalsTable = [
-    { id: 1, client_id: 1, vehicle_id: 1, daily_value: 45, start_date: new Date('2023-11-05T00:00:00'), return_date: undefined, amount: '', status: 'Andamento' },
-    { id: 2, client_id: 2, vehicle_id: 2, daily_value: 55, start_date: new Date('2023-11-08T00:00:00'), return_date: undefined, amount: '', status: 'Andamento' },
-    { id: 3, client_id: 3, vehicle_id: 3, daily_value: 50, start_date: new Date('2023-11-12T00:00:00'), return_date: new Date('2023-12-18T00:00:00'), amount: 'R$ 300,00', status: 'Finalizado' },
-    { id: 4, client_id: 4, vehicle_id: 4, daily_value: 65, start_date: new Date('2023-11-16T00:00:00'), return_date: undefined, amount: '', status: 'Andamento' },
-    { id: 5, client_id: 5, vehicle_id: 5, daily_value: 60, start_date: new Date('2023-11-20T00:00:00'), return_date: new Date('2023-12-26T00:00:00'), amount: 'R$ 360,00', status: 'Finalizado' },
+    { id: 1, client_id: 1, vehicle_id: 1, daily_value: 45, start_date: new Date('2023-11-05T00:00:00'), return_date: undefined, amount: 0, status: 'Andamento' },
+    { id: 2, client_id: 2, vehicle_id: 2, daily_value: 55, start_date: new Date('2023-11-08T00:00:00'), return_date: undefined, amount: 0, status: 'Andamento' },
+    { id: 3, client_id: 3, vehicle_id: 3, daily_value: 50, start_date: new Date('2023-11-12T00:00:00'), return_date: new Date('2023-12-18T00:00:00'), amount: 300, status: 'Finalizado' },
+    { id: 4, client_id: 4, vehicle_id: 4, daily_value: 65, start_date: new Date('2023-11-16T00:00:00'), return_date: undefined, amount: 0, status: 'Andamento' },
+    { id: 5, client_id: 5, vehicle_id: 5, daily_value: 60, start_date: new Date('2023-11-20T00:00:00'), return_date: new Date('2023-12-26T00:00:00'), amount: 360, status: 'Finalizado' },
 ]
 

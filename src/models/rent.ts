@@ -1,3 +1,5 @@
+import { differenceInHours } from "../main/helpers/date"
+
 export class Rent {
     public id: number = 0
     public client_id: number
@@ -5,7 +7,7 @@ export class Rent {
     public daily_value: number
     public start_date: Date
     public return_date?: Date
-    public amount: string = ''
+    public amount: number = 0
     public status: string
 
     constructor(client_id: number, vehicle_id: number, daily_value: number, start_date: Date) {
@@ -23,18 +25,9 @@ export class Rent {
         return rent
     }
 
-    private static calculateAmount(rent: Rent, vehicle_type: string): string {
-        const formatOption = {
-            style: 'currency',
-            currency: 'BRL',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        };
-
+    private static calculateAmount(rent: Rent, vehicle_type: string): number {
         const addition = vehicle_type == 'Carro' ? 0.10 : 0.05
-        const start_date = new Date(rent.start_date).getTime()
-        const return_date = new Date(rent.return_date!).getTime()
-        const differenceInDays = Math.floor((return_date - start_date) / (1000 * 60 * 60 * 24))
-        return (differenceInDays * rent.daily_value * (1 + addition)).toLocaleString('pt-BR', formatOption)
+        const hours = differenceInHours(rent.start_date, rent.return_date!)
+        return hours * rent.daily_value * (1 + addition)
     }
 }

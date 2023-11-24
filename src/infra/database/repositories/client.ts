@@ -3,6 +3,10 @@ import { Client } from "../../../models/client"
 import { ClientRepositoryInterface } from "../interfaces/client"
 
 export class ClientRepository implements ClientRepositoryInterface {
+    public list(): Client[] {
+        return clientsTable
+    }
+
     public findByCpf(cpf: string): Client | undefined {
         const client = clientsTable.find((client) => client.cpf == cpf)
         return client

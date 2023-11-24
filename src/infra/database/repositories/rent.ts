@@ -8,13 +8,13 @@ export class RentRepository implements RentRepositoryInterface {
         return rent
     }
 
-    public findByClientId(client_id: number): Rent[] {
+    public findByClientId(client_id: number): Rent[] | undefined {
         const rentals = rentalsTable.filter((rent) => rent.client_id == client_id)
-        return rentals
+        if (rentals.length > 0) return rentals
     }
 
-    public findByClientIdAndStatus(id: number, status: string): Rent | undefined {
-        const rent = rentalsTable.find((rent) => rent.id == id && rent.status == status)
+    public findByClientIdAndStatus(client_id: number, status: string): Rent | undefined {
+        const rent = rentalsTable.find((rent) => rent.client_id == client_id && rent.status == status)
         return rent
     }
 

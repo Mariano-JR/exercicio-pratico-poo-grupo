@@ -1,127 +1,22 @@
 import { ClientRepository } from "../infra/database/repositories/client"
 import { RentRepository } from "../infra/database/repositories/rent"
 import { VehicleRepository } from "../infra/database/repositories/vehicle"
-import { Client } from "../models/client"
-import { Rent } from "../models/rent"
-import { Vehicle } from "../models/vehicle"
 import * as readlineSync from 'readline-sync'
+import { ClientController } from "./controllers/client"
+import { VehicleController } from "./controllers/vehicle"
+import { RentController } from "./controllers/rent"
 
 const clientRepository = new ClientRepository()
 const vehicleRepository = new VehicleRepository()
 const rentRepository = new RentRepository()
 
-function registerClient(): void | boolean {
-    const name = readlineSync.question('\nDigite o nome do cliente: ')
-    const cpf = readlineSync.question('\nDigite o cpf do cliente, apenas numeros: ')
-    const clientExists = clientRepository.findByCpf(cpf)
-    if (clientExists) {
-        console.log('\nErro: Cliente já cadastrado no sistema')
-        return false
-    }
-    const license_type = readlineSync.question('\nDigite o tipo de carteira do cliente: (A/B) ')
-
-    const client = new Client(name, cpf, license_type)
-    clientRepository.save(client)
-    console.log('\nCliente cadastrado com sucesso!')
-}
-
-function registerVehicle(): void | boolean {
-    const type = readlineSync.question('\nDigite a tipo de veiculo: (Carro/Moto) ')
-    const model = readlineSync.question('\nDigite o modelo do veiculo: ')
-    const plate = readlineSync.question('\nDigite a placa do veiculo: ')
-    const vehicleExists = vehicleRepository.findByPlate(plate)
-    if (vehicleExists) {
-        console.log('\nErro: Veiculo já cadastrado no sistema')
-        return false
-    }
-    const daily_value = +readlineSync.question('\nDigite o valor da diaria do aluguel: ')
-
-    const vehicle = new Vehicle(type, model, plate, daily_value)
-    vehicleRepository.save(vehicle)
-    console.log('\nVeiculo cadastrado')
-}
-
-function rentVehicle(): void | boolean {
-    const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
-    const clientExists = clientRepository.findByCpf(cpf)
-    if (!clientExists) {
-        console.log('\nErro: Cliente nao encontrado')
-        return false
-    }
-    let rentExists = rentRepository.findByClientIdAndStatus(clientExists.id, 'Andamento')
-    if (!rentExists) {
-        console.log('\nErro: Esse cliente já possui um aluguel em andamento!')
-        return false
-    }
-    const license_type = readlineSync.question('\nDigite o tipo de licenca do cliente: (A/B) ')
-    const vehiclesExists = vehicleRepository.findByLicenseAndAvailable(license_type, true)
-    if (!vehiclesExists) {
-        console.log('\nErro: licenca invalida, ou não ha veiculos dessa licenca para alugar')
-        return false
-    }
-    console.log('\n-------------------------\n| Lista de veiculos disponiveis |\n-------------------------\n')
-    console.log(vehiclesExists)
-    const vehicle_id = +readlineSync.question('\nDigite o Id do veiculo: ')
-    const vehicle = vehicleRepository.findById(vehicle_id)
-    if (!vehicle) {
-        console.log('\nErro: Veiculo nao encontrado')
-        return false
-    }
-    const daily_value = vehicle.daily_value
-    const start_date = readlineSync.question('\nDigite a data de inicio do aluguel: ')
-
-    const rent = new Rent(clientExists.id, vehicle_id, daily_value, new Date(start_date))
-    rentRepository.save(rent)
-    console.log('\nVeiculo alugado com sucesso')
-}
-
-function returnVehicle(): void | boolean {
-    const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
-    const client = clientRepository.findByCpf(cpf)
-    if (!client) {
-        console.log('\nErro: Cliente nao encontrado')
-        return false
-    }
-    const plate = readlineSync.question('\nDigite a placa do veiculo: ')
-    const vehicle = vehicleRepository.findByPlate(plate)
-    if (!vehicle) {
-        console.log('\nErro: Veiculo nao encontrado')
-        return false
-    }
-
-    let rent = rentRepository.findByClientIdAndStatus(client.id, 'Andamento')
-    rent = Rent.return(rent!, vehicle.type)
-    rentRepository.update(rent)
-    console.log('\nVeiculo devolvido com sucesso')
-}
-
-function listVehicles(filter: boolean): void | boolean {
-    const vehicles = vehicleRepository.listByFilter(filter)
-    console.log(`\n---------------------------------\n| Lista de veiculos ${filter ? 'disponiveis' : ' alugados  '} |\n---------------------------------\n`)
-    vehicles.map(vehicle => {
-        console.log(`- ID: ${vehicle.id} | Tipo: ${vehicle.type} | Modelo: ${vehicle.model} | Placa: ${vehicle.plate} | Valor da Diária: R$ ${vehicle.daily_value},00 \n`)
-    })
-}
-
-function getInvoice(): void | boolean {
-    const cpf = readlineSync.question('\nDigite o CPF do cliente: ')
-    const client = clientRepository.findByCpf(cpf)
-    if (!client) {
-        console.log('\nErro: Cliente nao encontrado')
-        return false
-    }
-    const rentals = rentRepository.findByClientId(client.id)
-    console.log('\n-------------------------\n| Lista alugueis do cliente |\n-------------------------\n')
-    console.log(rentals)
-    const rent_id = +readlineSync.question('\nDigite o id do aluguel: ')
-    const rentExists = rentRepository.findById(rent_id)
-    if (!rentExists) {
-        console.log('\nErro: Aluguel nao encontrado')
-        return false
-    }
-    console.log('\n-------------------------\n| Lista alugueis do cliente |\n-------------------------\n')
-    console.log(rentExists)
-}
+const clientController = new ClientController(clientRepository)
+const vehicleController = new VehicleController(vehicleRepository)
+const rentController = new RentController(
+    clientRepository,
+    vehicleRepository,
+    rentRepository
+)
 
 function main(): void {
     let welcome = true
@@ -137,30 +32,33 @@ function main(): void {
         }
 
         option = +readlineSync.question(
-            message + '\n1 - Cadastrar Cliente\n2 - Cadastrar Veiculo\n3 - Alugar Veiculo\n4 - Devolver Veiculo\n5 - Listar Veiculos Disponiveis\n6 - Listar Veiculos Alugados\n7 - Mostrar Fatura do Cliente\n0 - Sair do sistema\n\n'
+            message + '\n1 - Cadastrar Cliente\n2 - Listar Clientes\n3 - Cadastrar Veiculo\n4 - Alugar Veiculo\n5 - Devolver Veiculo\n6 - Listar Veiculos Disponiveis\n7 - Listar Veiculos Alugados\n8 - Mostrar Fatura do Cliente\n0 - Sair do sistema\n\n'
         )
 
         switch (option) {
             case 1:
-                registerClient()
+                clientController.register()
                 break
             case 2:
-                registerVehicle()
+                clientController.list()
                 break
             case 3:
-                rentVehicle()
+                vehicleController.register()
                 break
             case 4:
-                returnVehicle()
+                rentController.register()
                 break
             case 5:
-                listVehicles(true)
+                rentController.return()
                 break
             case 6:
-                listVehicles(false)
+                vehicleController.list(true)
                 break
             case 7:
-                getInvoice()
+                vehicleController.list(false)
+                break
+            case 8:
+                rentController.generateInvoice()
                 break
             case 0:
                 console.log('\nSaindo do sistema\n')
