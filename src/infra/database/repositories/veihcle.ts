@@ -3,8 +3,11 @@ import { Vehicle } from "../../../models/vehicle"
 import { VehicleRepositoryInterface } from "../interfaces/vehicle"
 
 export class VehicleRepository implements VehicleRepositoryInterface {
-    public list(): Vehicle[] {
-        return vehiclesTable
+    public listByFilter(filter: boolean): Vehicle[] {
+        const vehicles = vehiclesTable.filter(
+            (vehicle) => vehicle.available == filter
+        )
+        return vehicles
     }
 
     public findById(id: number): Vehicle | undefined {
@@ -17,22 +20,16 @@ export class VehicleRepository implements VehicleRepositoryInterface {
         return vehicle
     }
 
+    public findByLicenseAndAvailable(license: string, available: boolean): Vehicle[] | undefined {
+        const vehicles = vehiclesTable.filter(
+            (vehicle) => vehicle.license_type == license && vehicle.available == available
+        )
+        return vehicles
+    }
+
     public save(vehicle: Vehicle): Vehicle {
         vehicle.id = vehiclesTable.length > 0 ? vehiclesTable[vehiclesTable.length - 1].id + 1 : 1
         vehiclesTable.push(vehicle)
         return vehicle
-    }
-
-    public edit(id: number, updatedVehicle: Vehicle): Vehicle {
-        const index = vehiclesTable.findIndex((vehicle) => vehicle.id === id)
-        if (index !== -1) {
-            vehiclesTable[index] = { ...vehiclesTable[index], ...updatedVehicle }
-        }
-        return vehiclesTable[index]
-    }
-
-    public remove(id: number): void {
-        const index = vehiclesTable.findIndex((vehicle) => vehicle.id === id)
-        vehiclesTable.splice(index, 1)
     }
 }

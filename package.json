@@ -9,9 +9,11 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.9.4",
+    "@types/readline-sync": "^1.4.8",
     "typescript": "5.2.2"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
     "readline-sync": "^1.4.10"
   }
 }

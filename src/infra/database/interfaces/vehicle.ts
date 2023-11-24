@@ -1,10 +1,9 @@
 import { Vehicle } from "../../../models/vehicle"
 
 export interface VehicleRepositoryInterface {
-    list(): Vehicle[]
+    listByFilter(filter: boolean): Vehicle[]
     findById(id: number): Vehicle | undefined
     findByPlate(plate: string): Vehicle | undefined
+    findByLicenseAndAvailable(license: string, available: boolean): Vehicle[] | undefined
     save(vehicle: Vehicle): Vehicle
-    edit(id: number, updatedVehicle: Vehicle): Vehicle
-    remove(id: number): void
 }
