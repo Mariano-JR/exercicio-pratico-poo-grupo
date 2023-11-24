@@ -5,5 +5,5 @@ export interface RentRepositoryInterface {
     findByClientId(client_id: number): Rent[] | undefined
     findByClientIdAndStatus(client_id: number, status: string): Rent | undefined
     save(rent: Rent): Rent
-    update(rent: Rent): Rent
+    updateReturn(rent: Rent): Rent
 }

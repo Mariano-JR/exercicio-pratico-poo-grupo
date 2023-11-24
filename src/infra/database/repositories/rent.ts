@@ -26,11 +26,13 @@ export class RentRepository implements RentRepositoryInterface {
         return rent
     }
 
-    public update(rent: Rent): Rent {
-        const index = rentalsTable.findIndex((rent) => rent.id === rent.id)
-        if (index !== -1) rentalsTable[index] = { ...rentalsTable[index], ...rent }
-        const vehicle = vehiclesTable.find((vehicle) => vehicle.id == rent.vehicle_id)
+    public updateReturn(updateRent: Rent): Rent {
+        const rent = rentalsTable.find((rent) => rent.id === rent.id)
+        rent!.return_date = updateRent.return_date
+        rent!.amount = updateRent.amount
+        rent!.status = updateRent.status
+        const vehicle = vehiclesTable.find((vehicle) => vehicle.id == rent!.vehicle_id)
         vehicle!.available = true
-        return rentalsTable[index]
+        return rent!
     }
 }

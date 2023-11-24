@@ -26,8 +26,15 @@ export class Rent {
     }
 
     private static calculateAmount(rent: Rent, vehicle_type: string): number {
+        let amount
         const addition = vehicle_type == 'Carro' ? 0.10 : 0.05
-        const hours = differenceInHours(rent.start_date, rent.return_date!)
-        return hours * rent.daily_value * (1 + addition)
+        const rentedHours = differenceInHours(rent.start_date, rent.return_date!)
+        if (rentedHours < 24) {
+            amount = rent.daily_value
+        } else {
+            const hour_value = rent.daily_value / 24
+            amount = rentedHours * hour_value
+        }
+        return amount * (1 + addition)
     }
 }

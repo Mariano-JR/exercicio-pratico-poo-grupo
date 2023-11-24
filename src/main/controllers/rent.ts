@@ -38,7 +38,7 @@ export class RentController {
         }
         const vehicle = this.vehicleRepository.findById(rentExists.vehicle_id)
         console.log(`\n---------------------------------------\n|              Fatura #${rentExists.id}              |\n---------------------------------------\n`)
-        console.log(`ID: ${rentExists.id}\nCliente: ${client.name}\nVeiculo: ${vehicle!.model}\nData de Locacao: ${formatDate(rentExists.start_date)}\nData de Entrega: ${formatDate(rentExists.return_date!)}\nValor total: ${formatCurrency(rentExists.daily_value)}\n`)
+        console.log(`ID: ${rentExists.id}\nCliente: ${client.name}\nVeiculo: ${vehicle!.model}\nData de Locacao: ${formatDate(rentExists.start_date)}\nData de Entrega: ${formatDate(rentExists.return_date!)}\nValor total: ${formatCurrency(rentExists.amount)}\n`)
     }
 
     public register(): void | boolean {
@@ -50,7 +50,7 @@ export class RentController {
         }
         let rentExists = this.rentRepository.findByClientIdAndStatus(clientExists.id, 'Andamento')
         if (rentExists) {
-            console.log('\nErro: Esse cliente já possui um aluguel em andamento!')
+            console.log('\nErro: Esse cliente ja possui um aluguel em andamento!')
             return false
         }
         const license_type = readlineSync.question('\nDigite o tipo de licenca do cliente: (A/B) ')
@@ -88,10 +88,14 @@ export class RentController {
             console.log('\nErro: Veiculo nao encontrado')
             return false
         }
+        let rentExists = this.rentRepository.findByClientIdAndStatus(client.id, 'Andamento')
+        if (!rentExists) {
+            console.log('\nErro: Esse cliente nao possui nenhum um aluguel em andamento!')
+            return false
+        }
 
-        let rent = this.rentRepository.findByClientIdAndStatus(client.id, 'Andamento')
-        rent = Rent.return(rent!, vehicle.type)
-        this.rentRepository.update(rent)
+        rentExists = Rent.return(rentExists, vehicle.type)
+        this.rentRepository.updateReturn(rentExists)
         console.log('\nVeiculo devolvido com sucesso')
     }
 }
