@@ -10,7 +10,7 @@ export class VehicleController {
 
     public list(filter: boolean): void {
         const vehicles = this.vehicleRepository.listByFilter(filter)
-        console.log(`\n ----------------------------------\n|   Lista de veiculos ${filter ? 'disponiveis' : ' alugados  '}   |\n ----------------------------------\n`)
+        console.log(`\n --------------------------------------------------------------------------------------------------------------\n|                                        Lista de veiculos ${filter ? 'disponiveis' : ' alugados  '}                                         |\n --------------------------------------------------------------------------------------------------------------\n`)
         vehicles.map(vehicle => {
             console.log(`- ID: ${vehicle.id} | Tipo: ${vehicle.type} | Modelo: ${vehicle.model} | Placa: ${vehicle.plate} | Valor da Diária: ${formatCurrency(vehicle.daily_value)} \n`)
         })

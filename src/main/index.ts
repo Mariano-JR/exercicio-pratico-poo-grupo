@@ -26,7 +26,7 @@ function main(): void {
     do {
         if (welcome) {
             welcome = false
-            message = '\n--------------------------------------\n| Bem Vindo ao sistema da Unidos SME |\n--------------------------------------\n\nPara prosseguir, escolha uma das opcoes abaixo:\n'
+            message = '\n --------------------------------------------------------------------------------------------------------------\n|                                      Bem Vindo ao sistema da Unidos SME                                      |\n --------------------------------------------------------------------------------------------------------------\n\nPara prosseguir, escolha uma das opcoes abaixo:\n'
         } else {
             message = '\nEscola outra opcao para continuar:\n'
         }
