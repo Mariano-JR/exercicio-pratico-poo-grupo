@@ -27,7 +27,7 @@ export class RentRepository implements RentRepositoryInterface {
     }
 
     public updateReturn(updateRent: Rent): Rent {
-        const rent = rentalsTable.find((rent) => rent.id === rent.id)
+        const rent = rentalsTable.find((rent) => rent.id == updateRent.id)
         rent!.return_date = updateRent.return_date
         rent!.amount = updateRent.amount
         rent!.status = updateRent.status
